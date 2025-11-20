@@ -6,7 +6,7 @@ import logging
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, Response, status
 
 from ..repository import InMemoryNoteRepository
 from ..schemas import Note, NoteCreate, NoteUpdate
@@ -134,21 +134,25 @@ def update_note(note_id: UUID, payload: NoteUpdate, service: NoteService = Depen
 @router.delete(
     "/{note_id}",
     summary="Delete a note",
-    description="Delete a note by its UUID.",
+    description="Delete a note by its UUID. Returns 204 No Content when successful.",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_note(note_id: UUID, service: NoteService = Depends(get_service)) -> None:
+def delete_note(note_id: UUID, service: NoteService = Depends(get_service)) -> Response:
     """Delete a note by ID.
+
+    This endpoint follows HTTP semantics for 204 No Content responses:
+    it returns no response body.
 
     Args:
         note_id: UUID of the note to delete.
         service: Injected NoteService.
 
     Returns:
-        None
+        Response: Empty 204 No Content response.
 
     Raises:
         HTTPException 404 if not found (from service).
     """
     service.delete_note(note_id)
-    return None
+    # Returning an explicit empty Response ensures no body is sent with 204.
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
