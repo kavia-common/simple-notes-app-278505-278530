@@ -136,6 +136,7 @@ def update_note(note_id: UUID, payload: NoteUpdate, service: NoteService = Depen
     summary="Delete a note",
     description="Delete a note by its UUID. Returns 204 No Content when successful.",
     status_code=status.HTTP_204_NO_CONTENT,
+    response_model=None,
 )
 def delete_note(note_id: UUID, service: NoteService = Depends(get_service)) -> Response:
     """Delete a note by ID.
