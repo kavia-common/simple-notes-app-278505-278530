@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .logging_config import configure_logging
-from .routers_notes import router as notes_router
+from .routers.notes import router as notes_router
 
 # Configure logging as early as possible
 configure_logging()
@@ -51,7 +51,11 @@ app.add_middleware(
     description="Returns health status of the API service.",
 )
 def health_check() -> dict:
-    """Health check endpoint returning a simple JSON status."""
+    """Health check endpoint returning a simple JSON status.
+
+    Returns:
+        dict: A message indicating the service health state.
+    """
     return {"message": "Healthy"}
 
 

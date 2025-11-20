@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 class InMemoryNoteRepository:
     """A simple, thread-safe in-memory repository for notes."""
-
     def __init__(self) -> None:
         self._items: Dict[UUID, Note] = {}
         self._lock = RLock()
